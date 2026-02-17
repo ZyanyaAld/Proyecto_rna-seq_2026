@@ -1,22 +1,21 @@
-# R data files
+# R files
 .RData
 .Rhistory
 *.Rproj
 .Rproj.user
 
-# Data files (raw data no se sube)
+# Data files
 raw-data/
-*.csv
-*.tsv
+processed-data/
+output/
 *.rds
 *.RDS
+*.csv
+*.tsv
 
-# Output files
-output/
-*.pdf
-*.png
-*.jpg
+# Image folders (para tus imágenes locales)
+img/
 
 # System files
 .DS_Store
-EOF
+Thumbs.db
