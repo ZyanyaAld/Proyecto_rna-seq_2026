@@ -1,0 +1,22 @@
+# R data files
+.RData
+.Rhistory
+*.Rproj
+.Rproj.user
+
+# Data files (raw data no se sube)
+raw-data/
+*.csv
+*.tsv
+*.rds
+*.RDS
+
+# Output files
+output/
+*.pdf
+*.png
+*.jpg
+
+# System files
+.DS_Store
+EOF
