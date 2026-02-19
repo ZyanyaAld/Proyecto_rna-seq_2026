@@ -1,28 +1,43 @@
-# Análisis de expresión diferencial - Proyecto SRP060355
+# Proyecto RNA-seq 2026
 
-## Descripción
-Análisis de expresión diferencial de genes farmacogenéticos en tejido hepático y renal usando datos de recount3 (SRP060355).
+***Zyanya Valentina Velazquez Aldrete***
 
-## Autora
+## Análisis de expresión diferencial – SRP188219
 
-*Zyanya Valentina Velazquez Aldrete*
+Este proyecto realiza un análisis completo de RNA-seq comparando:
 
-## Datos
-- Proyecto: SRP060355
-- Título: Transcriptomic variation of pharmacogenes in multiple human tissues
-- Muestras: 94 (24 hígado, 20 riñón, 25 corazón, 25 adiposo)
+- Apéndice auricular izquierdo
+- Apéndice auricular derecho
+
+El objetivo fue identificar genes diferencialmente expresados entre ambos tejidos cardíacos.
+
+El flujo de trabajo incluye:
+
+- Control de calidad
+- Filtrado de genes poco expresados
+- Normalización (edgeR)
+- Análisis exploratorio (PCA, MDS)
+- Expresión diferencial (limma + voom)
+- Visualizaciones (MA plot, Volcano, Heatmap)
 
 ## Estructura del proyecto
 
-```bash
-.
-├── 01-descarga-datos.R        # Script para descargar datos
-├── 02-procesamiento-datos.R   # Script para procesar y filtrar
-├── 03-analisis-expresion.R    # Script para análisis DE
-├── 04-graficas.R              # Script para visualizaciones
-├── analisis.Rmd               # Reporte final en R Markdown
-├── raw-data/                  # Datos crudos (no versionados)
-├── processed-data/            # Datos procesados
-├── output/                    # Resultados (tablas, figuras)
-└── figs/                      # Gráficas para el reporte
-```
+Code/
+Scripts de análisis
+
+results/
+Resultados y figuras generadas
+
+reporte_RNAseq_SRP188219.md
+Reporte detallado del análisis
+
+## Tecnologías utilizadas
+
+- R
+- edgeR
+- limma
+- ggplot2
+- pheatmap
+- recount3
+
+---
