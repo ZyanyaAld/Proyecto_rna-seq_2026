@@ -15,6 +15,7 @@ library(limma)
 library(ggplot2)
 library(pheatmap)
 library(RColorBrewer)
+library(ggrepel)
 
 
 # 2. CARGAR DATOS FILTRADOS
@@ -140,24 +141,60 @@ dev.off()
 de_results$Significant <- de_results$adj.P.Val < 0.05 &
   abs(de_results$logFC) > 1
 
-volcano <- ggplot(
-  de_results,
-  aes(x = logFC, y = -log10(adj.P.Val), color = Significant)
-) +
-  geom_point(alpha = 0.6) +
-  scale_color_manual(values = c("grey70", "#E7298A")) +
-  theme_bw(base_size = 15) +
-  ggtitle("Volcano Plot") +
-  xlab("Log2 Fold Change") +
-  ylab("-log10(FDR)")
+# Crear clasificación biológica
+de_results$Regulation <- "No significativo"
 
-ggsave(
-  "results/Volcano_plot.png",
-  plot = volcano,
-  width = 8,
-  height = 6,
-  dpi = 300
-)
+de_results$Regulation[
+  de_results$adj.P.Val < 0.05 & de_results$logFC > 0
+] <- "Sobreexpresado"
+
+de_results$Regulation[
+  de_results$adj.P.Val < 0.05 & de_results$logFC < 0
+] <- "Subexpresado"
+
+# Convertir a data.frame
+volcano_df <- de_results
+
+volcano_df$negLogFDR <- -log10(volcano_df$adj.P.Val)
+
+# Seleccionar top genes para etiquetar
+top_up <- volcano_df[
+  volcano_df$Regulation == "Sobreexpresado",
+][order(volcano_df$adj.P.Val), ][1:2, ]
+
+top_down <- volcano_df[
+  volcano_df$Regulation == "Subexpresado",
+][order(volcano_df$adj.P.Val), ][1:2, ]
+
+top_genes <- rbind(top_up, top_down)
+
+png("results/Volcano_plot.png", width = 1200, height = 1000, res = 200)
+
+ggplot(volcano_df, aes(x = logFC, y = negLogFDR, color = Regulation)) +
+  geom_point(alpha = 0.6, size = 2) +
+  scale_color_manual(
+    values = c(
+      "Sobreexpresado" = "#D73027",
+      "Subexpresado" = "#4575B4",
+      "No significativo" = "grey70"
+    )
+  ) +
+  geom_vline(xintercept = c(-1, 1), linetype = "dashed") +
+  geom_hline(yintercept = -log10(0.05), linetype = "dashed") +
+  geom_text_repel(
+    data = top_genes,
+    aes(label = rownames(top_genes)),
+    size = 4,
+    max.overlaps = 20
+  ) +
+  theme_bw(base_size = 15) +
+  labs(
+    title = "Volcano Plot – Expresión Diferencial",
+    x = "log2 Fold Change",
+    y = "-log10(FDR)"
+  )
+
+dev.off()
 
 # 9. HEATMAP TOP 50
 
