@@ -96,19 +96,20 @@ gene_means <- rowMeans(assay(rse_gene_SRP188219, "counts"))
 # Guardamos copia sin filtrar
 rse_gene_SRP188219_unfiltered <- rse_gene_SRP188219
 
-# Retenemos genes con expresión media > 0.1
-rse_gene_SRP188219 <-
+# Creamos objeto NUEVO filtrado (no sobreescribimos el original)
+rse_gene_SRP188219_filtered <-
   rse_gene_SRP188219[gene_means > 0.1, ]
 
 # Porcentaje retenido
 round(
-  nrow(rse_gene_SRP188219) /
+  nrow(rse_gene_SRP188219_filtered) /
     nrow(rse_gene_SRP188219_unfiltered) *
     100,
   2
 )
 
-# After filtering lowly expressed genes, 35,699 out of 63,856 genes were retained (55.91%),
-# removing 44.09% of genes with low or insufficient expression levels.
-
-save(rse_gene_SRP188219, file = "results/rse_gene_SRP188219_filtered.RData")
+# Guardamos objeto filtrado
+saveRDS(
+  rse_gene_SRP188219_filtered,
+  file = "processed-data/rse_gene_SRP188219_filtered.rds"
+)
